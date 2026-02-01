@@ -12,6 +12,9 @@ It is designed as a **DevOps knowledge reference** covering:
 Source service:
 - https://github.com/hashicorp/demo-consul-101/tree/main/services/counting-service
 
+Docker image:
+- https://hub.docker.com/r/nyanlintun/counting
+
 ---
 
 ## What this repo is (and is not)
@@ -77,12 +80,12 @@ The service is configured at runtime.
 ## Build the Docker image
 
 ```bash
-docker build -t counting-service:latest .
+docker build -t counting:latest .
 ```
 
 Verify image size:
 ```bash
-docker images | grep counting-service
+docker images | grep counting
 ```
 
 ---
@@ -94,7 +97,7 @@ docker images | grep counting-service
 docker run --rm \
   -e PORT=9003 \
   -p 9003:9003 \
-  counting-service:latest
+  counting:latest
 ```
 
 Access:
@@ -105,7 +108,7 @@ Access:
 docker run --rm \
   -e PORT=9005 \
   -p 9005:9005 \
-  counting-service:latest
+  counting:latest
 ```
 
 ### Expose one port, run on another (port mapping example)
@@ -127,7 +130,7 @@ Example:
 docker run --rm \
   -e PORT=9002 \
   -p 9004:9002 \
-  counting-service:latest
+  counting:latest
 ```
 
 Access from host:
@@ -135,7 +138,7 @@ Access from host:
 
 What happens internally:
 ```
-Browser -> localhost:9004 -> Docker -> container:9002 -> counting-service
+Browser -> localhost:9004 -> Docker -> container:9002 -> counting
 ```
 
 This pattern is useful when:
@@ -150,7 +153,7 @@ This pattern is useful when:
 docker run --rm \
   -e PORT=9003 \
   -p 127.0.0.1:9003:9003 \
-  counting-service:latest
+  counting:latest
 ```
 
 ---
@@ -176,7 +179,7 @@ spec:
     spec:
       containers:
         - name: counting
-          image: counting-service:latest
+          image: nyanlintun/counting:latest
           imagePullPolicy: IfNotPresent
           env:
             - name: PORT
